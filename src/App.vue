@@ -71,6 +71,8 @@ export default {
       <option value="Press de Banca">Press Banca</option>
       <option value="Press Militar">Press Militar</option>
       <option value="Peso Muerto">Peso Muerto</option>
+      <option value="Curl Bíceps">Curl Bíceps</option>
+      <option value="Tríceps polea">Tríceps polea</option>
     </select>
     <h2>Si no está lo puedes escribir aquí</h2>
 
