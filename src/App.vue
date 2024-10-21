@@ -2,7 +2,7 @@
 export default {
   data() {
     return {
-      titulo: "Gym app con Vue",
+      titulo: "GYM APP CON VUE",
       ejercicios: [],
       nuevoEjercicio: ""
       }
@@ -63,9 +63,9 @@ export default {
 <template>
 
   <main>
-    <h1 class="mt-0"> {{ titulo }}</h1>
-    <h2 class="mt-4">Elige un ejercicio de la lista</h2>
-    <select  v-model="nuevoEjercicio" @change="añadirEjercicioSelect" v-on:keyup.enter="añadirEjercicio" class="form-select my-3" aria-label="Default select example">
+    <h1> {{ titulo }}</h1>
+    <h2 class="mt-3 mb-4">Elige un ejercicio de la lista</h2>
+    <select v-model="nuevoEjercicio" @change="añadirEjercicioSelect" v-on:keyup.enter="añadirEjercicio" class="form-select my-3" aria-label="Default select example">
       <option selected>Elige un ejercicio</option>
       <option value="Sentadillas">Sentadillas</option>
       <option value="Press de Banca">Press Banca</option>
@@ -74,7 +74,7 @@ export default {
       <option value="Curl Bíceps">Curl Bíceps</option>
       <option value="Tríceps polea">Tríceps polea</option>
     </select>
-    <h2>Si no está lo puedes escribir aquí</h2>
+    <h2 class="mt-4">O escríbelo y lo añades</h2>
 
     <input type="text" class="form-control my-3" v-model="nuevoEjercicio" v-on:keyup.enter="añadirEjercicio">
     <div class="d-flex justify-content-between align-items-center">
