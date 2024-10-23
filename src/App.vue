@@ -67,11 +67,11 @@ export default {
     <select v-model="nuevoEjercicio" @change="añadirEjercicioSelect" v-on:keyup.enter="añadirEjercicio" class="form-select mb-4" aria-label="Default select example">
       <option value="" selected disabled>Elige un ejercicio</option>
       <option value="Sentadillas">Sentadillas</option>
-      <option value="Press de Banca">Press Banca</option>
+      <option value="Press Banca">Press Banca</option>
       <option value="Press Militar">Press Militar</option>
       <option value="Peso Muerto">Peso Muerto</option>
       <option value="Curl Bíceps">Curl Bíceps</option>
-      <option value="Tríceps Polea">Tríceps polea</option>
+      <option value="Tríceps Polea">Tríceps Polea</option>
     </select>
 
     <input type="text" class="form-control mb-4" v-model="nuevoEjercicio" v-on:keyup.enter="añadirEjercicio" placeholder="Escribe un ejercicio...">
@@ -80,7 +80,7 @@ export default {
       <button class="btn btn-danger" @click="eliminarTodo">Eliminar todo</button>
     </div>
 
-    <div class="mt-3" v-for="(ejercicio, index) of ejercicios">
+    <div class="mt-4" v-for="(ejercicio, index) of ejercicios">
 
       <div role="alert" :class="['alert', ejercicio.estado ? 'alert-success' : 'alert-danger']">
         <div class="d-flex justify-content-between align-items-center">
