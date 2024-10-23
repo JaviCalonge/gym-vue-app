@@ -18,7 +18,7 @@ export default {
   methods: {
     añadirEjercicioSelect () {
       if (this.nuevoEjercicio === "Elige un ejercicio" || this.nuevoEjercicio === "") {
-      return; // No hacer nada si el valor es "Elige un ejercicio"
+        return; // No hacer nada si el valor es "Elige un ejercicio"
       }
       this.ejercicios.push({
         nombre: this.nuevoEjercicio,
@@ -64,19 +64,17 @@ export default {
 
   <main>
     <h1> {{ titulo }}</h1>
-    <h2 class="mt-3 mb-4">Elige un ejercicio de la lista</h2>
-    <select v-model="nuevoEjercicio" @change="añadirEjercicioSelect" v-on:keyup.enter="añadirEjercicio" class="form-select my-3" aria-label="Default select example">
-      <option selected>Elige un ejercicio</option>
+    <select v-model="nuevoEjercicio" @change="añadirEjercicioSelect" v-on:keyup.enter="añadirEjercicio" class="form-select mb-4" aria-label="Default select example">
+      <option value="" selected disabled>Elige un ejercicio</option>
       <option value="Sentadillas">Sentadillas</option>
       <option value="Press de Banca">Press Banca</option>
       <option value="Press Militar">Press Militar</option>
       <option value="Peso Muerto">Peso Muerto</option>
       <option value="Curl Bíceps">Curl Bíceps</option>
-      <option value="Tríceps polea">Tríceps polea</option>
+      <option value="Tríceps Polea">Tríceps polea</option>
     </select>
-    <h2 class="mt-4">O escríbelo y lo añades</h2>
 
-    <input type="text" class="form-control my-3" v-model="nuevoEjercicio" v-on:keyup.enter="añadirEjercicio">
+    <input type="text" class="form-control mb-4" v-model="nuevoEjercicio" v-on:keyup.enter="añadirEjercicio" placeholder="Escribe un ejercicio...">
     <div class="d-flex justify-content-between align-items-center">
       <button class="btn btn-primary" @click="añadirEjercicioInput">Añadir</button>
       <button class="btn btn-danger" @click="eliminarTodo">Eliminar todo</button>
