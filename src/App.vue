@@ -100,7 +100,7 @@ export default {
     </div>
 
     <div
-      class="mt-4"
+      class="mt-4 w-180"
       v-for="(ejercicio, index) in ejercicios"
       :key="index"
       :class="['alert', 'p-2', esEjercicioCompleto(ejercicio) ? 'alert-success' : 'alert-danger']"
@@ -114,7 +114,7 @@ export default {
               :key="serieIndex"
               class="d-flex justify-content-between align-items-center"
             >
-              Serie {{ serieIndex + 1 }}: Peso: {{ serie.peso }} kg Repeticiones: {{ serie.repeticiones }}
+              -Serie {{ serieIndex + 1 }}: Peso: {{ serie.peso }}kg Repeticiones: {{ serie.repeticiones }}
               <button
                 class="btn btn-success btn-sm ms-2"
                 @click="cambiarEstadoSerie(index, serieIndex)"
