@@ -4,67 +4,78 @@ export default {
     return {
       titulo: "GYM APP CON VUE",
       ejercicios: [],
-      nuevoEjercicio: ""
-      }
-    },
-  created () {
-      let datosLocalStorage = JSON.parse(localStorage.getItem("gym-vue"))
-      if (datosLocalStorage === null) {
-        this.ejercicios = []
-      } else {
-        this.ejercicios = datosLocalStorage
-      }
-    },
+      nuevoEjercicio: "",
+      seriesPorEjercicio: 1,
+      peso: 0,
+      repeticiones: 0
+    };
+  },
+  created() {
+    let datosLocalStorage = JSON.parse(localStorage.getItem("gym-vue"));
+    this.ejercicios = datosLocalStorage || [];
+  },
   methods: {
-    añadirEjercicioSelect () {
-      if (this.nuevoEjercicio === "Elige un ejercicio" || this.nuevoEjercicio === "") {
-        return; // No hacer nada si el valor es "Elige un ejercicio"
-      }
+    añadirEjercicioSelect() {
+      if (this.nuevoEjercicio === "Elige un ejercicio" || this.nuevoEjercicio === "") return;
+      const series = Array.from({ length: this.seriesPorEjercicio }, () => ({
+        peso: this.peso,
+        repeticiones: this.repeticiones,
+        completada: false
+      }));
       this.ejercicios.push({
         nombre: this.nuevoEjercicio,
-        estadoBoton: "¿Hecho?" 
+        series: series
       });
-      this.nuevoEjercicio = ""
-      localStorage.setItem("gym-vue", JSON.stringify(this.ejercicios))
+      this.resetForm();
+      localStorage.setItem("gym-vue", JSON.stringify(this.ejercicios));
     },
-    añadirEjercicioInput () {
-      if (this.nuevoEjercicio === "") {
-      return; // No hacer nada si el valor es "Elige un ejercicio"
-      }
+    añadirEjercicioInput() {
+      if (this.nuevoEjercicio === "") return;
+      const series = Array.from({ length: this.seriesPorEjercicio }, () => ({
+        peso: this.peso,
+        repeticiones: this.repeticiones,
+        completada: false
+      }));
       this.ejercicios.push({
         nombre: this.nuevoEjercicio,
-        estadoBoton: "¿Hecho?" 
+        series: series
       });
-      this.nuevoEjercicio = ""
-      localStorage.setItem("gym-vue", JSON.stringify(this.ejercicios))
+      this.resetForm();
+      localStorage.setItem("gym-vue", JSON.stringify(this.ejercicios));
     },
-    cambiarEstadoTrue (index) {
-      let ejercicio = this.ejercicios[index];
-      // Cambiar el estado de true a false y viceversa
-      ejercicio.estado = !ejercicio.estado;
-      // Cambiar el texto del botón
-      ejercicio.estadoBoton = ejercicio.estado ? "Hecho" : "¿Hecho?";
-      localStorage.setItem("gym-vue", JSON.stringify(this.ejercicios))
+    resetForm() {
+      this.nuevoEjercicio = "";
+      this.seriesPorEjercicio = 1;
+      this.peso = 0;
+      this.repeticiones = 0;
     },
-    eliminarEjercicio (index) {
-      alert("Vas a eliminar este ejercicio")
-      this.ejercicios.splice(index, 1)
-      localStorage.setItem("gym-vue", JSON.stringify(this.ejercicios))
+    cambiarEstadoSerie(ejercicioIndex, serieIndex) {
+      const serie = this.ejercicios[ejercicioIndex].series[serieIndex];
+      serie.completada = !serie.completada;
+      localStorage.setItem("gym-vue", JSON.stringify(this.ejercicios));
     },
-    eliminarTodo () {
-    alert("Vas a eliminar toda la lista")
-    this.ejercicios = []
-    localStorage.setItem("gym-vue", JSON.stringify(this.ejercicios))
+    esEjercicioCompleto(ejercicio) {
+      return ejercicio.series.every(serie => serie.completada);
+    },
+    eliminarEjercicio(index) {
+      alert("Vas a eliminar este ejercicio");
+      this.ejercicios.splice(index, 1);
+      localStorage.setItem("gym-vue", JSON.stringify(this.ejercicios));
+    },
+    eliminarTodo() {
+      alert("Vas a eliminar toda la lista");
+      this.ejercicios = [];
+      localStorage.setItem("gym-vue", JSON.stringify(this.ejercicios));
+    }
   }
-  }
-}
+};
 </script>
 
 <template>
-
   <main>
-    <h1> {{ titulo }}</h1>
-    <select v-model="nuevoEjercicio" @change="añadirEjercicioSelect" v-on:keyup.enter="añadirEjercicio" class="form-select mb-4" aria-label="Default select example">
+    <h1>{{ titulo }}</h1>
+
+    <select v-model="nuevoEjercicio" class="form-select mb-4">
       <option value="" selected disabled>Elige un ejercicio</option>
       <option value="Sentadillas">Sentadillas</option>
       <option value="Press Banca">Press Banca</option>
@@ -74,27 +85,48 @@ export default {
       <option value="Tríceps Polea">Tríceps Polea</option>
     </select>
 
-    <input type="text" class="form-control mb-4" v-model="nuevoEjercicio" v-on:keyup.enter="añadirEjercicio" placeholder="Escribe un ejercicio...">
+    <input type="text" class="form-control mb-4" v-model="nuevoEjercicio" placeholder="Escribe un ejercicio...">
+
+    <label>Series</label>
+    <input type="number" class="form-control mb-2 w-25" v-model="seriesPorEjercicio" min="1">
+    <label>Peso</label>
+    <input type="number" class="form-control mb-2 w-25" v-model="peso" min="0">
+    <label>Repeticiones</label>
+    <input type="number" class="form-control mb-4 w-25" v-model="repeticiones" min="1">
+
     <div class="d-flex justify-content-between align-items-center">
       <button class="btn btn-primary" @click="añadirEjercicioInput">Añadir</button>
       <button class="btn btn-danger" @click="eliminarTodo">Eliminar todo</button>
     </div>
 
-    <div class="mt-4" v-for="(ejercicio, index) of ejercicios">
-
-      <div role="alert" :class="['alert', ejercicio.estado ? 'alert-success' : 'alert-danger']">
-        <div class="d-flex justify-content-between align-items-center">
-          <div>
-            <h4>{{ index +1 }} - {{ ejercicio.nombre }}</h4>
-          </div>
-          <div>
-            <button class="btn btn-success btn-sm" @click="cambiarEstadoTrue(index)">{{ ejercicio.estadoBoton }}</button>
-            <button class="btn btn-danger btn-sm" @click="eliminarEjercicio(index)">X</button>
-          </div>
+    <div
+      class="mt-4"
+      v-for="(ejercicio, index) in ejercicios"
+      :key="index"
+      :class="['alert', 'p-2', esEjercicioCompleto(ejercicio) ? 'alert-success' : 'alert-danger']"
+    >
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h4>{{ index + 1 }} - {{ ejercicio.nombre }}</h4>
+          <ul>
+            <li
+              v-for="(serie, serieIndex) in ejercicio.series"
+              :key="serieIndex"
+              class="d-flex justify-content-between align-items-center"
+            >
+              Serie {{ serieIndex + 1 }}: Peso: {{ serie.peso }} kg Repeticiones: {{ serie.repeticiones }}
+              <button
+                class="btn btn-success btn-sm ms-2"
+                @click="cambiarEstadoSerie(index, serieIndex)"
+              >
+                {{ serie.completada ? "Completada" : "¿Hecho?" }}
+              </button>
+              <br>
+            </li>
+          </ul>
         </div>
+        <button class="btn btn-danger btn-sm" @click="eliminarEjercicio(index)">X</button>
       </div>
-
     </div>
-
   </main>
 </template>
